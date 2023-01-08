@@ -1,10 +1,15 @@
 use std::fs;
 
+fn parse_to_u32(item: &str) -> u32 {
+    item.parse().unwrap()
+}
+
 fn sum_data(block: &str) -> u32 {
     block
         .split('\n')
         .filter(|item| !item.is_empty())
-        .map(|item| item.parse::<u32>().unwrap())
+        // .map(|item| item.parse::<u32>().unwrap())
+        .map(parse_to_u32)
         .sum::<u32>()
 }
 
