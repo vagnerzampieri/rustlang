@@ -13,3 +13,7 @@ Calorie Counting - https://adventofcode.com/2022/day/1
 #### example-04
 
 Rock Paper Scissors - https://adventofcode.com/2022/day/2
+
+#### example-05
+
+Rucksack Reorganization - https://adventofcode.com/2022/day/3
