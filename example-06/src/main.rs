@@ -1,3 +1,5 @@
+use std::io;
+
 struct User {
     active: bool,
     username: String,
@@ -20,8 +22,18 @@ fn main() {
         String::from("example@example.com")
     );
 
-    println!("Active: {}", user.active);
-    println!("Username: {}", user.username);
-    println!("Email: {}", user.email);
-    println!("Sign in count: {}", user.sign_in_count);
+    println!("Coloque o username para logar");
+
+    let mut username = String::new();
+
+    io::stdin()
+        .read_line(&mut username)
+        .expect("Error reading console");
+
+    println!("Logged? {}", username.trim() == user.username);
+
+    // println!("Active: {}", user.active);
+    // println!("Username: {}", user.username);
+    // println!("Email: {}", user.email);
+    // println!("Sign in count: {}", user.sign_in_count);
 }
