@@ -17,3 +17,7 @@ Rock Paper Scissors - https://adventofcode.com/2022/day/2
 #### example-05
 
 Rucksack Reorganization - https://adventofcode.com/2022/day/3
+
+#### example-06
+
+Struct
