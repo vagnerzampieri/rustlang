@@ -5,13 +5,20 @@ struct User {
     sign_in_count: u64,
 }
 
-fn main() {
-    let user = User {
+fn build_user(username: String, email: String) -> User {
+    User {
+        username,
+        email,
         active: true,
-        username: String::from("example"),
-        email: String::from("example@example.com"),
         sign_in_count: 1
-    };
+    }
+}
+
+fn main() {
+    let user = build_user(
+        String::from("example"),
+        String::from("example@example.com")
+    );
 
     println!("Active: {}", user.active);
     println!("Username: {}", user.username);
