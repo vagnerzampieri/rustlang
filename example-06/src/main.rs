@@ -36,4 +36,12 @@ fn main() {
     // println!("Username: {}", user.username);
     // println!("Email: {}", user.email);
     // println!("Sign in count: {}", user.sign_in_count);
+
+    let user2 = User {
+        username: String::from("example2"),
+        ..user
+    };
+
+    println!("Username 2 {}", user2.username);
+    println!("Email 2 {}", user2.email);
 }
