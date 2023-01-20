@@ -29,3 +29,7 @@ Struct
 #### example-07
 
 get IPV4 e IPV6
+
+#### example-08
+
+enum, match
