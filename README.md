@@ -25,3 +25,7 @@ Rucksack Reorganization - https://adventofcode.com/2022/day/3
 #### example-06
 
 Struct
+
+#### example-07
+
+get IPV4 e IPV6
