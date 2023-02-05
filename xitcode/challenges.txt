@@ -1,0 +1,81 @@
+A+B
+Arithmetic/Integer
+Array concatenation
+Array length
+Arrays
+Boolean values
+Call a function
+Character codes
+Check that file exists
+Code Golf: Code Golf
+Compare length of two strings
+Conditional structures
+Conjugate a Latin verb
+Copy a string
+Create a file
+Detect division by zero
+Determine if a string is numeric
+Draw a pixel
+Empty program
+Empty string
+Environment variables
+Factorial
+File input/output
+Find limit of recursion
+Find square difference
+FizzBuzz
+Formatted numeric output
+Function definition
+Greatest element of a list
+Halt and catch fire
+Hello world/Graphical
+Hello world/Text
+Increment a numerical string
+Input loop
+Integer comparison
+Iterators
+Jump anywhere
+Keyboard input/Flush the keyboard buffer
+Keyboard input/Keypress check
+Keyboard input/Obtain a Y or N response
+Literals/Integer
+Logical operations
+Loops/Break
+Loops/Do-while
+Loops/Downward for
+Loops/For
+Loops/For with a specified step
+Loops/Increment loop index within loop body
+Loops/Infinite
+Loops/N plus one half
+Loops/While
+Loops/With multiple ranges
+Multiplication tables
+Naming conventions
+Nth root
+Null object
+Operator precedence
+Program termination
+Read a file line by line
+Real constants and functions
+RPG attributes generator
+Selectively replace multiple instances of a character within a string
+Sieve of Pritchard
+Simple windowed application
+Split a character string based on change of character
+String append
+String comparison
+String concatenation
+String interpolation (included)
+String matching
+String prepend
+Substring
+System time
+Tokenize a string
+Transliterate English text using the Greek alphabet
+Two's complement
+User input/Text
+Variables
+Zero to the zero power
+
+
