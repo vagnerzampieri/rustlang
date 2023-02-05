@@ -77,5 +77,3 @@ Two's complement
 User input/Text
 Variables
 Zero to the zero power
-
-
