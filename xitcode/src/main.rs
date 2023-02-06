@@ -1,28 +1,28 @@
+use rand::seq::SliceRandom;
 use std::{
     fs::{File, OpenOptions},
     io::{self, BufRead, BufReader, Error, Write},
     path::Path,
 };
-use rand::seq::SliceRandom;
 
 fn lines_from_file(filename: impl AsRef<Path>) -> io::Result<Vec<String>> {
     BufReader::new(File::open(filename)?).lines().collect()
 }
 
+fn rand_data(lines: Vec<String>) -> String {
+    lines.choose(&mut rand::thread_rng()).unwrap().to_string()
+}
+
 fn main() -> Result<(), Error> {
-    let lines = lines_from_file("languages.txt").expect("Could not load lines");
-    let language = lines.choose(&mut rand::thread_rng()).unwrap();
+    let languages = lines_from_file("languages.txt").expect("Could not load lines");
+    let language = rand_data(languages);
 
-    println!("Language: {}", language);
+    let challenges = lines_from_file("challenges.txt").expect("Could not load lines");
+    let challenge = rand_data(challenges);
 
-    let lines = lines_from_file("challenges.txt").expect("Could not load lines");
-    let challenge = lines.choose(&mut rand::thread_rng()).unwrap();
+    let result = format!("{}: {}", language, challenge);
 
-    println!("Challenge: {}", challenge);
-
-    let result = format!("{}, {}", language, challenge);
-
-    println!("{:?}", result);
+    println!("{}", result);
 
     let file_name = "result.txt";
     let mut file = OpenOptions::new()
