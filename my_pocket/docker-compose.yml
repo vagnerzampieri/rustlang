@@ -19,5 +19,5 @@ services:
       - ./mongo:/data/db
 networks:
   default:
-    external:
-      name: my_pocket
+    external: true
+    name: my_pocket
