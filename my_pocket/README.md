@@ -85,3 +85,7 @@ GET `/tags`
 
 `docker compose up -d`
 `cargo run`
+
+## Stop
+
+`docker compose stop`
