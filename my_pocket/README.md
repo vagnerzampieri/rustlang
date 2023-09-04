@@ -83,6 +83,7 @@ GET `/tags`
 
 ## Run
 
+`docker network create my_pocket`
 `docker compose up -d`
 `cargo run`
 
