@@ -23,11 +23,16 @@ struct Pocket {
     updated_at: DateTime<Utc>,
 }
 
+#[get("/healthchecker")]
+async fn healthchecker() -> impl Responder {
+    HttpResponse::Ok().body("OK")
+}
+
 #[get("/pockets")]
 async fn pockets() -> impl Responder {
     let db = db().await.unwrap();
-    let collection = db.collection::<Pocket>("pockets");
-    let cursor = collection.find(doc! {}, None).await.unwrap();
+    let collection = db.collection("pockets");
+    let mut cursor = collection.find(doc! {}, None).await.unwrap();
     let mut pockets: Vec<Pocket> = Vec::new();
 
     for result in cursor {
@@ -62,6 +67,7 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(|| {
         App::new()
+            .service(healthchecker)
             .service(pockets)
             .service(create_pocket)
             .service(pocket_by_id)

@@ -80,3 +80,8 @@ GET `/tags`
   }
 ]
 ```
+
+## Run
+
+`docker compose up -d`
+`cargo run`
