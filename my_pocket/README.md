@@ -90,3 +90,10 @@ GET `/tags`
 ## Stop
 
 `docker compose stop`
+
+## Run with make
+
+`make dev`
+`make dev-down`
+`make start-server`
+`make install`
