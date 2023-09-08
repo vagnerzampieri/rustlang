@@ -2,9 +2,9 @@ use std::env;
 use dotenv::dotenv;
 
 use mongodb::{
-    bson::extjson::de::Error,
+    bson::{extjson::de::Error, oid::ObjectId, doc},
     results::InsertOneResult,
-    Client, Collection
+    Client, Collection,
 };
 
 use crate::models::tag_model::Tag;
@@ -44,6 +44,19 @@ impl MongoRepo {
             .await
             .ok()
             .expect("Error creating tag"))
+    }
+
+    pub async fn get_tag(&self, id: &String) -> Result<Tag, Error> {
+        let obj_id = ObjectId::parse_str(id).unwrap();
+        let filter = doc! { "_id": obj_id };
+
+        let tag_detail = self.tag_collection
+            .find_one(filter, None)
+            .await
+            .ok()
+            .expect("Error getting tag");
+
+        Ok(tag_detail.unwrap())
     }
 
     pub async fn create_pocket(&self, pocket: Pocket) -> Result<InsertOneResult, Error> {
