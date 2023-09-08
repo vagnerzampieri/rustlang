@@ -81,6 +81,14 @@ GET `/tags`
 ]
 ```
 
+POST `/tags`
+```
+{
+  name: String
+}
+```
+
+
 ## Run
 
 `docker network create my_pocket`
