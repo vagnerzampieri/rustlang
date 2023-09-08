@@ -2,7 +2,8 @@ mod api;
 mod models;
 mod repository;
 
-use actix_web::{web::Data, App, HttpServer};
+use actix_web::{middleware::Logger, web::Data, App, HttpServer};
+use env_logger;
 use repository::mongodb_repo::MongoRepo;
 
 use api::{
@@ -16,8 +17,11 @@ async fn main() -> std::io::Result<()> {
     let db = MongoRepo::init().await;
     let db_data = Data::new(db);
 
+    env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
+
     HttpServer::new(move || {
         App::new()
+            .wrap(Logger::default())
             .app_data(db_data.clone())
             .service(healthchecker)
             .service(create_tag)
