@@ -59,6 +59,19 @@ impl MongoRepo {
         Ok(tag_detail.unwrap())
     }
 
+    pub async fn update_tag(&self, id: &String, tag: Tag) -> Result<Tag, Error> {
+        let obj_id = ObjectId::parse_str(id).unwrap();
+        let filter = doc! { "_id": obj_id };
+
+        Ok(self.tag_collection
+            .find_one_and_replace(filter, tag, None)
+            .await
+            .ok()
+            .expect("Error updating tag")
+            .unwrap())
+
+    }
+
     pub async fn create_pocket(&self, pocket: Pocket) -> Result<InsertOneResult, Error> {
         Ok(self.pocket_collection
             .insert_one(pocket, None)

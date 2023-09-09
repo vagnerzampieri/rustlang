@@ -8,7 +8,7 @@ use std::env;
 use repository::mongodb_repo::MongoRepo;
 
 use api::{
-    tag_api::{create_tag, get_tag},
+    tag_api::{create_tag, get_tag, update_tag},
     pocket_api::create_pocket,
     health_checker_api::healthchecker,
 };
@@ -28,6 +28,7 @@ async fn main() -> std::io::Result<()> {
             .service(healthchecker)
             .service(create_tag)
             .service(get_tag)
+            .service(update_tag)
             .service(create_pocket)
     })
     .bind(("localhost", 8080))?
