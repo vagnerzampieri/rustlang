@@ -8,8 +8,8 @@ use std::env;
 use repository::mongodb_repo::MongoRepo;
 
 use api::{
-    tag_api::{get_tag, get_tags, create_tag, update_tag, delete_tag},
-    pocket_api::{create_pocket, get_pockets},
+    tag_api::{get_tags, get_tag, create_tag, update_tag, delete_tag},
+    pocket_api::{get_pockets, create_pocket},
     health_checker_api::healthchecker,
 };
 

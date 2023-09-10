@@ -9,12 +9,12 @@ use actix_web::{
     HttpResponse,
 };
 
-#[post("/tags")]
-pub async fn create_tag(tag: Json<Tag>, repo: Data<MongoRepo>) -> HttpResponse {
-    let result = repo.create_tag(tag.into_inner()).await;
+#[get("/tags")]
+pub async fn get_tags(repo: Data<MongoRepo>) -> HttpResponse {
+    let result = repo.get_tags().await;
 
     match result {
-        Ok(tag) => HttpResponse::Ok().json(tag),
+        Ok(tags) => HttpResponse::Ok().json(tags),
         Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
     }
 }
@@ -28,6 +28,16 @@ pub async fn get_tag(path: Path<String>, repo: Data<MongoRepo>) -> HttpResponse 
     }
 
     let result = repo.get_tag(&id).await;
+
+    match result {
+        Ok(tag) => HttpResponse::Ok().json(tag),
+        Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
+    }
+}
+
+#[post("/tags")]
+pub async fn create_tag(tag: Json<Tag>, repo: Data<MongoRepo>) -> HttpResponse {
+    let result = repo.create_tag(tag.into_inner()).await;
 
     match result {
         Ok(tag) => HttpResponse::Ok().json(tag),
@@ -75,16 +85,6 @@ pub async fn delete_tag(path: Path<String>, repo: Data<MongoRepo>) -> HttpRespon
                 return HttpResponse::InternalServerError().body("Error deleting tag");
             }
         },
-        Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
-    }
-}
-
-#[get("/tags")]
-pub async fn get_tags(repo: Data<MongoRepo>) -> HttpResponse {
-    let result = repo.get_tags().await;
-
-    match result {
-        Ok(tags) => HttpResponse::Ok().json(tags),
         Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
     }
 }
