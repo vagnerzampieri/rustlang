@@ -4,7 +4,7 @@ use crate::{
 };
 
 use actix_web::{
-    post, get, put,
+    get, post, put, delete,
     web::{Data, Json, Path},
     HttpResponse,
 };
@@ -51,6 +51,28 @@ pub async fn update_tag(path: Path<String>, tag: Json<Tag>, repo: Data<MongoRepo
                 return HttpResponse::Ok().json(updated_tag);
             } else {
                 return HttpResponse::InternalServerError().body("Error getting updated tag");
+            }
+        },
+        Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
+    }
+}
+
+#[delete("/tags/{id}")]
+pub async fn delete_tag(path: Path<String>, repo: Data<MongoRepo>) -> HttpResponse {
+    let id = path.into_inner();
+
+    if id.is_empty() {
+        return HttpResponse::BadRequest().body("id is required");
+    }
+
+    let result = repo.delete_tag(&id).await;
+
+    match result {
+        Ok(res) => {
+            if res.deleted_count == 1 {
+                return HttpResponse::Ok().body("Tag deleted");
+            } else {
+                return HttpResponse::InternalServerError().body("Error deleting tag");
             }
         },
         Err(err) => HttpResponse::InternalServerError().body(err.to_string()),

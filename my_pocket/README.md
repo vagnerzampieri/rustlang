@@ -88,6 +88,26 @@ POST `/tags`
 }
 ```
 
+GET `/tags/:id`
+```
+{
+  name: String
+}
+```
+
+PUT `/tags/:id`
+```
+{
+  name: String
+}
+```
+
+DELETE `/tags/:id`
+```
+{
+  name: String
+}
+```
 
 ## Run
 

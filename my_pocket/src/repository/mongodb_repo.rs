@@ -3,7 +3,7 @@ use dotenv::dotenv;
 
 use mongodb::{
     bson::{extjson::de::Error, oid::ObjectId, doc},
-    results::InsertOneResult,
+    results::InsertOneResult, results::DeleteResult,
     Client, Collection,
 };
 
@@ -70,6 +70,19 @@ impl MongoRepo {
             .expect("Error updating tag")
             .unwrap())
 
+    }
+
+    pub async fn delete_tag(&self, id: &String) -> Result<DeleteResult, Error> {
+        let obj_id = ObjectId::parse_str(id).unwrap();
+        let filter = doc! { "_id": obj_id };
+
+        let tag = self.tag_collection
+            .delete_one(filter, None)
+            .await
+            .ok()
+            .expect("Error deleting tag");
+
+        Ok(tag)
     }
 
     pub async fn create_pocket(&self, pocket: Pocket) -> Result<InsertOneResult, Error> {
