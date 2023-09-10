@@ -1,6 +1,8 @@
 use std::env;
 use dotenv::dotenv;
 
+use futures::stream::TryStreamExt;
+
 use mongodb::{
     bson::{extjson::de::Error, oid::ObjectId, doc},
     results::InsertOneResult, results::DeleteResult,
@@ -37,6 +39,8 @@ impl MongoRepo {
             pocket_collection: db.collection("Pocket"),
         }
     }
+
+    // ----------------------------- TAG -----------------------------
 
     pub async fn create_tag(&self, tag: Tag) -> Result<InsertOneResult, Error> {
         Ok(self.tag_collection
@@ -85,11 +89,55 @@ impl MongoRepo {
         Ok(tag)
     }
 
+    pub async fn get_tags(&self) -> Result<Vec<Tag>, Error> {
+        let mut cursors = self.tag_collection
+            .find(None, None)
+            .await
+            .ok()
+            .expect("Error getting tags");
+
+        let mut tags: Vec<Tag> = Vec::new();
+
+        while let Some(tag) = cursors
+            .try_next()
+            .await
+            .ok()
+            .expect("Error mapping through cursor")
+        {
+            tags.push(tag);
+        }
+
+        Ok(tags)
+    }
+
+    // ----------------------------- POCKET -----------------------------
+
     pub async fn create_pocket(&self, pocket: Pocket) -> Result<InsertOneResult, Error> {
         Ok(self.pocket_collection
             .insert_one(pocket, None)
             .await
             .ok()
             .expect("Error creating pocket"))
+    }
+
+    pub async fn get_pockets(&self) -> Result<Vec<Pocket>, Error> {
+        let mut cursors = self.pocket_collection
+            .find(None, None)
+            .await
+            .ok()
+            .expect("Error getting pockets");
+
+        let mut pockets: Vec<Pocket> = Vec::new();
+
+        while let Some(pocket) = cursors
+            .try_next()
+            .await
+            .ok()
+            .expect("Error mapping through cursor")
+        {
+            pockets.push(pocket);
+        }
+
+        Ok(pockets)
     }
 }

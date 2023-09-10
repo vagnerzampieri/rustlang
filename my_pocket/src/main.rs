@@ -8,8 +8,8 @@ use std::env;
 use repository::mongodb_repo::MongoRepo;
 
 use api::{
-    tag_api::{create_tag, get_tag, update_tag, delete_tag},
-    pocket_api::create_pocket,
+    tag_api::{get_tag, get_tags, create_tag, update_tag, delete_tag},
+    pocket_api::{create_pocket, get_pockets},
     health_checker_api::healthchecker,
 };
 
@@ -29,8 +29,10 @@ async fn main() -> std::io::Result<()> {
             .service(create_tag)
             .service(get_tag)
             .service(update_tag)
-            .service(create_pocket)
             .service(delete_tag)
+            .service(get_tags)
+            .service(create_pocket)
+            .service(get_pockets)
     })
     .bind(("localhost", 8080))?
     .run()

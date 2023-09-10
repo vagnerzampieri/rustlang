@@ -78,3 +78,13 @@ pub async fn delete_tag(path: Path<String>, repo: Data<MongoRepo>) -> HttpRespon
         Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
     }
 }
+
+#[get("/tags")]
+pub async fn get_tags(repo: Data<MongoRepo>) -> HttpResponse {
+    let result = repo.get_tags().await;
+
+    match result {
+        Ok(tags) => HttpResponse::Ok().json(tags),
+        Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
+    }
+}
