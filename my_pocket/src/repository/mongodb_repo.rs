@@ -42,12 +42,25 @@ impl MongoRepo {
 
     // ----------------------------- TAG -----------------------------
 
-    pub async fn create_tag(&self, tag: Tag) -> Result<InsertOneResult, Error> {
-        Ok(self.tag_collection
-            .insert_one(tag, None)
+    pub async fn get_tags(&self) -> Result<Vec<Tag>, Error> {
+        let mut cursors = self.tag_collection
+            .find(None, None)
             .await
             .ok()
-            .expect("Error creating tag"))
+            .expect("Error getting tags");
+
+        let mut tags: Vec<Tag> = Vec::new();
+
+        while let Some(tag) = cursors
+            .try_next()
+            .await
+            .ok()
+            .expect("Error mapping through cursor")
+        {
+            tags.push(tag);
+        }
+
+        Ok(tags)
     }
 
     pub async fn get_tag(&self, id: &String) -> Result<Tag, Error> {
@@ -61,6 +74,14 @@ impl MongoRepo {
             .expect("Error getting tag");
 
         Ok(tag_detail.unwrap())
+    }
+
+    pub async fn create_tag(&self, tag: Tag) -> Result<InsertOneResult, Error> {
+        Ok(self.tag_collection
+            .insert_one(tag, None)
+            .await
+            .ok()
+            .expect("Error creating tag"))
     }
 
     pub async fn update_tag(&self, id: &String, tag: Tag) -> Result<Tag, Error> {
@@ -89,36 +110,7 @@ impl MongoRepo {
         Ok(tag)
     }
 
-    pub async fn get_tags(&self) -> Result<Vec<Tag>, Error> {
-        let mut cursors = self.tag_collection
-            .find(None, None)
-            .await
-            .ok()
-            .expect("Error getting tags");
-
-        let mut tags: Vec<Tag> = Vec::new();
-
-        while let Some(tag) = cursors
-            .try_next()
-            .await
-            .ok()
-            .expect("Error mapping through cursor")
-        {
-            tags.push(tag);
-        }
-
-        Ok(tags)
-    }
-
     // ----------------------------- POCKET -----------------------------
-
-    pub async fn create_pocket(&self, pocket: Pocket) -> Result<InsertOneResult, Error> {
-        Ok(self.pocket_collection
-            .insert_one(pocket, None)
-            .await
-            .ok()
-            .expect("Error creating pocket"))
-    }
 
     pub async fn get_pockets(&self) -> Result<Vec<Pocket>, Error> {
         let mut cursors = self.pocket_collection
@@ -139,5 +131,13 @@ impl MongoRepo {
         }
 
         Ok(pockets)
+    }
+
+    pub async fn create_pocket(&self, pocket: Pocket) -> Result<InsertOneResult, Error> {
+        Ok(self.pocket_collection
+            .insert_one(pocket, None)
+            .await
+            .ok()
+            .expect("Error creating pocket"))
     }
 }
