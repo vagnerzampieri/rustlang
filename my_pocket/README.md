@@ -81,14 +81,14 @@ GET `/tags`
 ]
 ```
 
-POST `/tags`
+GET `/tags/:id`
 ```
 {
   name: String
 }
 ```
 
-GET `/tags/:id`
+POST `/tags`
 ```
 {
   name: String
