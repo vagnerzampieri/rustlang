@@ -4,10 +4,36 @@ use crate::{
 };
 
 use actix_web::{
-    get, post,
-    web::{Data, Json},
+    get, post, put, delete,
+    web::{Data, Json, Path},
     HttpResponse,
 };
+
+#[get("/pockets")]
+pub async fn get_pockets(repo: Data<MongoRepo>) -> HttpResponse {
+    let result = repo.get_pockets().await;
+
+    match result {
+        Ok(pockets) => HttpResponse::Ok().json(pockets),
+        Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
+    }
+}
+
+#[get("/pockets/{id}")]
+pub async fn get_pocket(path: Path<String>,repo: Data<MongoRepo>) -> HttpResponse {
+    let id = path.into_inner();
+
+    if id.is_empty() {
+        return HttpResponse::BadRequest().body("id is required");
+    }
+
+    let result = repo.get_pocket(&id).await;
+
+    match result {
+        Ok(pocket) => HttpResponse::Ok().json(pocket),
+        Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
+    }
+}
 
 #[post("/pockets")]
 pub async fn create_pocket(pocket: Json<Pocket>, repo: Data<MongoRepo>) -> HttpResponse {
@@ -19,12 +45,46 @@ pub async fn create_pocket(pocket: Json<Pocket>, repo: Data<MongoRepo>) -> HttpR
     }
 }
 
-#[get("/pockets")]
-pub async fn get_pockets(repo: Data<MongoRepo>) -> HttpResponse {
-    let result = repo.get_pockets().await;
+#[put("/pockets/{id}")]
+pub async fn update_pocket(path: Path<String>, pocket: Json<Pocket>, repo: Data<MongoRepo>) -> HttpResponse {
+    let id = path.into_inner();
+
+    if id.is_empty() {
+        return HttpResponse::BadRequest().body("id is required");
+    }
+
+    let result = repo.update_pocket(&id, pocket.into_inner()).await;
 
     match result {
-        Ok(pockets) => HttpResponse::Ok().json(pockets),
+        Ok(_pocket) => {
+            if let Some(updated_pocket) = repo.get_pocket(&id).await.ok() {
+                HttpResponse::Ok().json(updated_pocket)
+            } else {
+                HttpResponse::InternalServerError().body("Error getting updated pocket")
+            }
+        },
+        Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
+    }
+}
+
+#[delete("/pockets/{id}")]
+pub async fn delete_pocket(path: Path<String>, repo: Data<MongoRepo>) -> HttpResponse {
+    let id = path.into_inner();
+
+    if id.is_empty() {
+        return HttpResponse::BadRequest().body("id is required");
+    }
+
+    let result = repo.delete_pocket(&id).await;
+
+    match result {
+        Ok(res) => {
+            if res.deleted_count == 1 {
+                HttpResponse::Ok().body("Pocket deleted")
+            } else {
+                HttpResponse::InternalServerError().body("Error deleting pocket")
+            }
+        },
         Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
     }
 }

@@ -133,11 +133,50 @@ impl MongoRepo {
         Ok(pockets)
     }
 
+    pub async fn get_pocket(&self, id: &String) -> Result<Pocket, Error> {
+        let obj_id = ObjectId::parse_str(id).unwrap();
+        let filter = doc! { "_id": obj_id };
+
+        let pocket_detail = self.pocket_collection
+            .find_one(filter, None)
+            .await
+            .ok()
+            .expect("Error getting pocket");
+
+        Ok(pocket_detail.unwrap())
+    }
+
     pub async fn create_pocket(&self, pocket: Pocket) -> Result<InsertOneResult, Error> {
         Ok(self.pocket_collection
             .insert_one(pocket, None)
             .await
             .ok()
             .expect("Error creating pocket"))
+    }
+
+    pub async fn update_pocket(&self, id: &String, pocket: Pocket) -> Result<Pocket, Error> {
+        let obj_id = ObjectId::parse_str(id).unwrap();
+        let filter = doc! { "_id": obj_id };
+
+        Ok(self.pocket_collection
+            .find_one_and_replace(filter, pocket, None)
+            .await
+            .ok()
+            .expect("Error updating pocket")
+            .unwrap())
+
+    }
+
+    pub async fn delete_pocket(&self, id: &String) -> Result<DeleteResult, Error> {
+        let obj_id = ObjectId::parse_str(id).unwrap();
+        let filter = doc! { "_id": obj_id };
+
+        let pocket = self.pocket_collection
+            .delete_one(filter, None)
+            .await
+            .ok()
+            .expect("Error deleting pocket");
+
+        Ok(pocket)
     }
 }

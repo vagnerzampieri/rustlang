@@ -9,7 +9,7 @@ use repository::mongodb_repo::MongoRepo;
 
 use api::{
     tag_api::{get_tags, get_tag, create_tag, update_tag, delete_tag},
-    pocket_api::{get_pockets, create_pocket},
+    pocket_api::{get_pockets, get_pocket, create_pocket, update_pocket, delete_pocket},
     health_checker_api::healthchecker,
 };
 
@@ -26,13 +26,16 @@ async fn main() -> std::io::Result<()> {
             .wrap(Logger::default())
             .app_data(db_data.clone())
             .service(healthchecker)
-            .service(create_tag)
+            .service(get_tags)
             .service(get_tag)
+            .service(create_tag)
             .service(update_tag)
             .service(delete_tag)
-            .service(get_tags)
-            .service(create_pocket)
             .service(get_pockets)
+            .service(get_pocket)
+            .service(create_pocket)
+            .service(update_pocket)
+            .service(delete_pocket)
     })
     .bind(("localhost", 8080))?
     .run()
