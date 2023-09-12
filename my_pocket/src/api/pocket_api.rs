@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use crate::{
     models::pocket_model::Pocket,
     repository::mongodb_repo::MongoRepo
@@ -5,13 +7,13 @@ use crate::{
 
 use actix_web::{
     get, post, put, delete,
-    web::{Data, Json, Path},
+    web::{Data, Json, Path, Query},
     HttpResponse,
 };
 
 #[get("/pockets")]
-pub async fn get_pockets(repo: Data<MongoRepo>) -> HttpResponse {
-    let result = repo.get_pockets().await;
+pub async fn get_pockets(query: Query<HashMap<String, String>>, repo: Data<MongoRepo>) -> HttpResponse {
+    let result = repo.get_pockets(query.get("tag")).await;
 
     match result {
         Ok(pockets) => HttpResponse::Ok().json(pockets),

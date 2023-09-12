@@ -1,6 +1,7 @@
 use std::env;
 use dotenv::dotenv;
 
+use env_logger::filter;
 use futures::stream::TryStreamExt;
 
 use mongodb::{
@@ -112,9 +113,14 @@ impl MongoRepo {
 
     // ----------------------------- POCKET -----------------------------
 
-    pub async fn get_pockets(&self) -> Result<Vec<Pocket>, Error> {
+    pub async fn get_pockets(&self, tag_name: Option<&String>) -> Result<Vec<Pocket>, Error> {
+        let filter = match tag_name {
+            Some(tag_name) => doc! { "tags.name": tag_name },
+            None => doc! {},
+        };
+
         let mut cursors = self.pocket_collection
-            .find(None, None)
+            .find(filter, None)
             .await
             .ok()
             .expect("Error getting pockets");
@@ -164,7 +170,6 @@ impl MongoRepo {
             .ok()
             .expect("Error updating pocket")
             .unwrap())
-
     }
 
     pub async fn delete_pocket(&self, id: &String) -> Result<DeleteResult, Error> {
