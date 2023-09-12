@@ -9,7 +9,7 @@ use mongodb::{
     Client, Collection,
 };
 
-use crate::models::tag_model::Tag;
+use crate::{models::tag_model::Tag, requests::pocket_request::PocketRequest};
 use crate::models::pocket_model::Pocket;
 
 pub struct MongoRepo {
@@ -151,11 +151,13 @@ impl MongoRepo {
         Ok(pocket_detail.unwrap())
     }
 
-    pub async fn create_pocket(&self, pocket: Pocket) -> Result<InsertOneResult, Error> {
+    pub async fn create_pocket(&self, pocket: PocketRequest) -> Result<InsertOneResult, Error> {
         let new_doc = Pocket {
             id: None,
+            description: pocket.description,
+            link: pocket.link,
+            tags: pocket.tags,
             created_at: chrono::Utc::now(),
-            ..pocket
         };
 
         let new_pocket = self.pocket_collection

@@ -5,6 +5,8 @@ use crate::{
     repository::mongodb_repo::MongoRepo
 };
 
+use crate::requests::pocket_request::PocketRequest;
+
 use actix_web::{
     get, post, put, delete,
     web::{Data, Json, Path, Query},
@@ -40,7 +42,7 @@ pub async fn get_pocket(path: Path<String>,repo: Data<MongoRepo>) -> HttpRespons
 #[post("/pockets")]
 // I'm working with the same Pocket I'm using on the model, so I need a specific
 // to work with the Request body
-pub async fn create_pocket(pocket: Json<Pocket>, repo: Data<MongoRepo>) -> HttpResponse {
+pub async fn create_pocket(pocket: Json<PocketRequest>, repo: Data<MongoRepo>) -> HttpResponse {
     let result = repo.create_pocket(pocket.into_inner()).await;
 
     match result {
