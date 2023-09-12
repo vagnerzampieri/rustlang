@@ -41,7 +41,9 @@ pub async fn get_pocket(path: Path<String>,repo: Data<MongoRepo>) -> HttpRespons
 
 #[post("/pockets")]
 pub async fn create_pocket(pocket: Json<PocketRequest>, repo: Data<MongoRepo>) -> HttpResponse {
-    let result = repo.create_pocket(pocket.into_inner()).await;
+    let result = repo.create_pocket(
+        pocket.into_inner().into_pocket()
+    ).await;
 
     match result {
         Ok(pocket) => HttpResponse::Ok().json(pocket),
