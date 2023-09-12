@@ -152,11 +152,19 @@ impl MongoRepo {
     }
 
     pub async fn create_pocket(&self, pocket: Pocket) -> Result<InsertOneResult, Error> {
-        Ok(self.pocket_collection
-            .insert_one(pocket, None)
+        let new_doc = Pocket {
+            id: None,
+            created_at: chrono::Utc::now(),
+            ..pocket
+        };
+
+        let new_pocket = self.pocket_collection
+            .insert_one(new_doc, None)
             .await
             .ok()
-            .expect("Error creating pocket"))
+            .expect("Error creating pocket");
+
+        Ok(new_pocket)
     }
 
     pub async fn update_pocket(&self, id: &String, pocket: Pocket) -> Result<Pocket, Error> {

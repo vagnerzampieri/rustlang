@@ -38,6 +38,8 @@ pub async fn get_pocket(path: Path<String>,repo: Data<MongoRepo>) -> HttpRespons
 }
 
 #[post("/pockets")]
+// I'm working with the same Pocket I'm using on the model, so I need a specific
+// to work with the Request body
 pub async fn create_pocket(pocket: Json<Pocket>, repo: Data<MongoRepo>) -> HttpResponse {
     let result = repo.create_pocket(pocket.into_inner()).await;
 
