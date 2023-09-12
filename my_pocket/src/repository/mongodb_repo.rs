@@ -1,7 +1,6 @@
 use std::env;
 use dotenv::dotenv;
 
-use env_logger::filter;
 use futures::stream::TryStreamExt;
 
 use mongodb::{
