@@ -130,3 +130,4 @@ DELETE `/tags/:id`
 
 - https://codevoweb.com/build-a-crud-api-with-rust-and-mongodb/
 - https://blog.devgenius.io/build-a-rest-api-with-rust-and-mongodb-actix-web-version-a275215c262a
+- https://dev.to/sirneij/authentication-system-using-rust-actix-web-and-sveltekit-user-registration-580h
