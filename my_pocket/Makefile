@@ -1,10 +1,10 @@
 dev:
 	docker compose up -d
 
-dev-down:
-	docker compose down
+stop:
+	docker compose stop
 
-start-server:
+server:
 	cargo watch -q -c -w src/ -x run
 
 install:

@@ -122,8 +122,8 @@ DELETE `/tags/:id`
 ## Run with make
 
 `make dev`
-`make dev-down`
-`make start-server`
+`make stop`
+`make server`
 `make install`
 
 ## References
